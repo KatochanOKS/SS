@@ -5,6 +5,8 @@ class GraphicsManager;
 class PipelineManager;
 class GameEngine;
 class WindowManager;
+class MeshManager;  // MenuManagerは必要なら追加
+class DeviceManager;  // DeviceManagerは必要なら追加
 // 必要ならここに他のManagerも追加（SceneManagerなど）
 
 class EngineManager {
@@ -34,8 +36,12 @@ public:
     void SetPipelineManager(PipelineManager* mgr) { m_pipelineManager = mgr; }
     PipelineManager* GetPipelineManager() { return m_pipelineManager; }
 
+	void SetMeshManager(MeshManager* mgr) { m_meshManager = mgr; }  // MenuManagerのセッター
+	MeshManager* GetMeshManager() { return m_meshManager; }  // MenuManagerのゲッター
     // 他Managerもここに追加可能
 
+	void SetDeviceManager(DeviceManager* mgr) { m_deviceManager = mgr; }  // DeviceManagerのセッター
+	DeviceManager* GetDeviceManager() { return m_deviceManager; }  // DeviceManagerのゲッター
 private:
     EngineManager() = default;
     ApplicationManager* m_appManager = nullptr;
@@ -44,5 +50,7 @@ private:
 	EngineManager* m_engineManager = nullptr;
 	GameEngine* m_gameEngine = nullptr;  // GameEngineのポインタ
 	WindowManager* m_windowManager = nullptr;  // WindowManagerのポインタ
+	MeshManager* m_meshManager = nullptr;  // MenuManagerのポインタ（必要なら追加）
+	DeviceManager* m_deviceManager = nullptr;  // DeviceManagerのポインタ（必要なら追加）
     // 他のManagerのポインタ
 };
