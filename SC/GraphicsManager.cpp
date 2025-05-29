@@ -1,11 +1,17 @@
 #include "GraphicsManager.h"
 #include <cassert>
+#include "Mesh.h"
+#include "PipelineManager.h"
+#include <memory>       // 念のため
+#include <d3d12.h>      // DX12コマンド
 
 // ウィンドウハンドルを外部から受け取り、保持する
 void GraphicsManager::SetHWND(HWND hwnd) {
     m_hWnd = hwnd;
 }
-
+ID3D12Device* GraphicsManager::GetDevice() const {
+    return m_deviceManager.GetDevice();
+}
 // 各描画用マネージャーを初期化する（デバイス → スワップチェイン → レンダーターゲットの順）
 void GraphicsManager::Initialize() {
     // DirectX 12 のデバイス、コマンド周りを初期化
@@ -44,15 +50,37 @@ void GraphicsManager::EndFrame() {
 
     // 画面に表示（バックバッファをフロントバッファに切り替える）
     m_swapChainManager.Present();
-
+    // GPUが完了するまでフェンスで待機（CPUとGPUの同期）
+    m_deviceManager.WaitForGPU();
     // コマンドリストとアロケータを再準備（次のフレームのために）
     m_deviceManager.ResetCommandList();
 }
 
+void GraphicsManager::DrawTriangle(std::shared_ptr<Mesh> triangleMesh, PipelineManager* pipelineManager) {
+    auto* cmdList = m_deviceManager.GetCommandList();
+
+    // パイプラインステート・ルートシグネチャ
+    cmdList->SetPipelineState(pipelineManager->GetPipeline("Basic"));
+    cmdList->SetGraphicsRootSignature(pipelineManager->GetRootSignature());
+
+    // ビューポート/シザー矩形（ここでは画面全体。メンバや引数で持っても良い）
+    D3D12_VIEWPORT viewport = { 0, 0, (float)m_width, (float)m_height, 0, 1 };
+    D3D12_RECT scissorRect = { 0, 0, (LONG)m_width, (LONG)m_height };
+    cmdList->RSSetViewports(1, &viewport);
+    cmdList->RSSetScissorRects(1, &scissorRect);
+
+    // 頂点バッファセット
+    cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    cmdList->IASetVertexBuffers(0, 1, &triangleMesh->VertexBufferView);
+
+    // 描画命令
+    cmdList->DrawInstanced(triangleMesh->VertexCount, 1, 0, 0);
+}
+
+
 // 終了時の解放処理
 void GraphicsManager::Cleanup() {
-    // GPUが完了するまでフェンスで待機（CPUとGPUの同期）
-    m_deviceManager.WaitForGPU();
+
     m_renderTargetManager.Cleanup();
     m_deviceManager.Cleanup(); // ※ SwapChainManager は自動で解放されるので省略可
 }
@@ -61,3 +89,4 @@ void GraphicsManager::Cleanup() {
 ID3D12GraphicsCommandList* GraphicsManager::GetCommandList() {
     return m_deviceManager.GetCommandList();
 }
+

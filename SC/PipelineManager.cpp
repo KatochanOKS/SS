@@ -28,9 +28,9 @@ void PipelineManager::Initialize(ID3D12Device* device) {
 
 
 void PipelineManager::CreateBasicPipeline() {
-    BIN_FILE12 vs("assets/VertexShader.cso");
+    BIN_FILE12 vs("asset/VertexShader.cso");
     assert(vs.succeeded());
-    BIN_FILE12 ps("assets/PixelShader.cso");
+    BIN_FILE12 ps("asset/PixelShader.cso");
     assert(ps.succeeded());
 
     D3D12_INPUT_ELEMENT_DESC inputLayout[] = {

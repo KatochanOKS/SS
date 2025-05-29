@@ -45,6 +45,9 @@
     <ClCompile Include="PipelineManager.cpp">
       <Filter>ソース ファイル\GraphicsManager</Filter>
     </ClCompile>
+    <ClCompile Include="MeshManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DeviceManager.h">
@@ -80,5 +83,19 @@
     <ClInclude Include="PipelineManager.h">
       <Filter>ソース ファイル\GraphicsManager</Filter>
     </ClInclude>
+    <ClInclude Include="MeshManager.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="PixelShader.hlsl">
+      <Filter>ソース ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="VertexShader.hlsl">
+      <Filter>ソース ファイル</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

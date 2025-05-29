@@ -2,6 +2,10 @@
 #include "DeviceManager.h"
 #include "SwapChainManager.h"
 #include "RenderTargetManager.h"
+#include <memory>            // std::shared_ptr
+
+class Mesh;
+class PipelineManager;
 
 class GraphicsManager {
 public:
@@ -10,7 +14,9 @@ public:
     void BeginFrame();       // •`‰æ€”õ
     void EndFrame();         // •`‰æI—¹EPresent
     void Cleanup();          // ‰ğ•ú
-
+    ID3D12Device* GetDevice() const;
+    // OŠpŒ`•`‰æ—p‚ÌŠÖ”iMesh‚ÆPipelineManager‚ğó‚¯æ‚éj
+    void DrawTriangle(std::shared_ptr<Mesh> triangleMesh, PipelineManager* pipelineManager);
     ID3D12GraphicsCommandList* GetCommandList();
 
 private:
@@ -19,4 +25,8 @@ private:
     DeviceManager m_deviceManager;
     SwapChainManager m_swapChainManager;
     RenderTargetManager m_renderTargetManager;
+
+    int m_width = 1280;
+    int m_height = 720;
+
 };
