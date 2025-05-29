@@ -1,12 +1,17 @@
 #pragma once
 #include <d3d12.h>
 #include <wrl.h>
-
+#include <DirectXMath.h>  // ←これ追加！
+using namespace DirectX;  // ←XMFLOAT4X4用
+struct ConstBufferData {
+    XMFLOAT4X4 mat;
+};
 // --- コンスタントバッファ（CBV）とディスクリプタヒープの管理クラス ---
 // ・シェーダ用定数バッファ（matrixなど）を扱う
 // ・毎フレーム値を更新し、GPUに渡す役割
 class ConstantBufferManager {
 public:
+   
     // CBVとヒープの初期化（deviceからリソースとディスクリプタヒープを生成）
     void Initialize(ID3D12Device* device, UINT bufferSize = 256);
     // CPU側から定数バッファのメモリ領域にアクセス（値を書き込む用）

@@ -1,16 +1,6 @@
-struct VS_INPUT
-{
-    float3 pos : POSITION;
-};
+#include "Header.hlsli"
 
-struct PS_INPUT
+float4 main(float4 pos : POSITION) : SV_POSITION
 {
-    float4 pos : SV_POSITION;
-};
-
-PS_INPUT main(VS_INPUT input)
-{
-    PS_INPUT output;
-    output.pos = float4(input.pos, 1.0f);
-    return output;
+    return mul(Mat, pos);
 }

@@ -4,6 +4,7 @@
 class Mesh;
 class PipelineManager;
 class GraphicsManager;
+class ConstantBufferManager;
 
 class GameEngine {
 public:
@@ -18,4 +19,5 @@ private:
     std::shared_ptr<Mesh> m_quadMesh;        // OŠpŒ`Mesh
     GraphicsManager* m_graphicsManager = nullptr;
     PipelineManager* m_pipelineManager = nullptr;
+	ConstantBufferManager* m_constantBufferManager = nullptr;
 };

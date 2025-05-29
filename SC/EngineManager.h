@@ -7,6 +7,7 @@ class GameEngine;
 class WindowManager;
 class MeshManager;  // MenuManagerは必要なら追加
 class DeviceManager;  // DeviceManagerは必要なら追加
+class ConstantBufferManager;  // ConstantBufferManagerは必要なら追加
 // 必要ならここに他のManagerも追加（SceneManagerなど）
 
 class EngineManager {
@@ -42,6 +43,9 @@ public:
 
 	void SetDeviceManager(DeviceManager* mgr) { m_deviceManager = mgr; }  // DeviceManagerのセッター
 	DeviceManager* GetDeviceManager() { return m_deviceManager; }  // DeviceManagerのゲッター
+
+	void SetConstantBufferManager(ConstantBufferManager* mgr) { m_constantBufferManager = mgr; }  // ConstantBufferManagerのセッター
+	ConstantBufferManager* GetConstantBufferManager() { return m_constantBufferManager; }  // ConstantBufferManagerのゲッター
 private:
     EngineManager() = default;
     ApplicationManager* m_appManager = nullptr;
@@ -52,5 +56,6 @@ private:
 	WindowManager* m_windowManager = nullptr;  // WindowManagerのポインタ
 	MeshManager* m_meshManager = nullptr;  // MenuManagerのポインタ（必要なら追加）
 	DeviceManager* m_deviceManager = nullptr;  // DeviceManagerのポインタ（必要なら追加）
+	ConstantBufferManager* m_constantBufferManager = nullptr;  // ConstantBufferManagerのポインタ（必要なら追加）
     // 他のManagerのポインタ
 };

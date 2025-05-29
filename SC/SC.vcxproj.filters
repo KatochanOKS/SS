@@ -51,6 +51,9 @@
     <ClCompile Include="MeshManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="ConstantBufferManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DeviceManager.h">
@@ -92,6 +95,9 @@
     <ClInclude Include="BIN_FILE12.h">
       <Filter>utility</Filter>
     </ClInclude>
+    <ClInclude Include="ConstantBufferManager.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PixelShader.hlsl">
@@ -100,5 +106,10 @@
     <FxCompile Include="VertexShader.hlsl">
       <Filter>ソース ファイル</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Header.hlsli">
+      <Filter>ソース ファイル</Filter>
+    </None>
   </ItemGroup>
 </Project>

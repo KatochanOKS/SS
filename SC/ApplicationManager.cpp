@@ -6,6 +6,7 @@
 #include "EngineManager.h"
 #include "MeshManager.h"
 #include"PipelineManager.h"
+#include "ConstantBufferManager.h"
 int ApplicationManager::Run(GameEngine* engine, HINSTANCE hInstance, int nCmdShow) {
     // ウィンドウ作成
     auto* window = EngineManager::GetInstance().GetWindowManager();
@@ -19,9 +20,10 @@ int ApplicationManager::Run(GameEngine* engine, HINSTANCE hInstance, int nCmdSho
     // 3. PipelineManager初期化（ここでPSOやルートシグネチャを作る！）
     EngineManager::GetInstance().GetPipelineManager()->Initialize(graphics->GetDevice());
     // 【追加】Device取得 → MeshManager初期化
-    ID3D12Device* device = graphics->GetDevice();  // GetDevice()はGraphicsManagerに実装
-    EngineManager::GetInstance().GetMeshManager()->Initialize(device);
-
+      // GetDevice()はGraphicsManagerに実装
+    EngineManager::GetInstance().GetMeshManager()->Initialize(graphics->GetDevice());
+	auto* cbManager = EngineManager::GetInstance().GetConstantBufferManager();
+    cbManager->Initialize(graphics->GetDevice(), 256); // 256バイト単位
     // ゲームエンジン初期化
     engine->Initialize();
 

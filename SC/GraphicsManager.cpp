@@ -4,6 +4,7 @@
 #include "PipelineManager.h"
 #include <memory>       // 念のため
 #include <d3d12.h>      // DX12コマンド
+#include "ConstantBufferManager.h" // 定数バッファ管理用ヘッダ
 
 // ウィンドウハンドルを外部から受け取り、保持する
 void GraphicsManager::SetHWND(HWND hwnd) {
@@ -57,7 +58,11 @@ void GraphicsManager::EndFrame() {
 }
 
 // 四角形（インデックスバッファあり）用の描画関数
-void GraphicsManager::DrawQuad(std::shared_ptr<Mesh> quadMesh, PipelineManager* pipelineManager) {
+void GraphicsManager::DrawQuad(
+    std::shared_ptr<Mesh> quadMesh,
+    PipelineManager* pipelineManager,
+    ConstantBufferManager* cbManager // ← これも引数に追加して使う設計がおすすめ
+) {
     auto* cmdList = m_deviceManager.GetCommandList();
 
     // パイプライン＆ルートシグネチャのセット
@@ -69,6 +74,13 @@ void GraphicsManager::DrawQuad(std::shared_ptr<Mesh> quadMesh, PipelineManager* 
     D3D12_RECT scissorRect = { 0, 0, (LONG)m_width, (LONG)m_height };
     cmdList->RSSetViewports(1, &viewport);
     cmdList->RSSetScissorRects(1, &scissorRect);
+
+    // --- CBVヒープのセット（毎回やる） ---
+    ID3D12DescriptorHeap* heaps[] = { cbManager->GetHeap() };
+    cmdList->SetDescriptorHeaps(1, heaps);
+
+    // --- ルートパラメータにディスクリプタテーブルをバインド ---
+    cmdList->SetGraphicsRootDescriptorTable(0, cbManager->GetGPUHandle());
 
     // バッファセット
     cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -84,6 +96,7 @@ void GraphicsManager::DrawQuad(std::shared_ptr<Mesh> quadMesh, PipelineManager* 
         cmdList->DrawInstanced(quadMesh->VertexCount, 1, 0, 0);
     }
 }
+
 
 
 // 終了時の解放処理

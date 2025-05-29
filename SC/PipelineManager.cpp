@@ -6,22 +6,40 @@ using Microsoft::WRL::ComPtr;
 void PipelineManager::Initialize(ID3D12Device* device) {
     m_device = device;
 
-    // ルートシグネチャ作成（パラメータ無し）
-    D3D12_ROOT_SIGNATURE_DESC desc = {};
-    desc.NumParameters = 0;
-    desc.pParameters = nullptr;
-    desc.NumStaticSamplers = 0;
-    desc.pStaticSamplers = nullptr;
-    desc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
+    //ディスクリプタレンジ。ディスクリプタヒープとシェーダを紐づける役割をもつ。
+    D3D12_DESCRIPTOR_RANGE  range[1] = {};
+    UINT b0 = 0;
+    range[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_CBV;
+    range[0].BaseShaderRegister = b0;
+    range[0].NumDescriptors = 1;
+    range[0].RegisterSpace = 0;
+    range[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
+    //ルートパラメタをディスクリプタテーブルとして使用
+    D3D12_ROOT_PARAMETER rootParam[1] = {};
+    rootParam[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+    rootParam[0].DescriptorTable.pDescriptorRanges = range;
+    rootParam[0].DescriptorTable.NumDescriptorRanges = _countof(range);
+    rootParam[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
+
+    //ルートシグニチャの記述
+    D3D12_ROOT_SIGNATURE_DESC desc = {};
+    desc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
+    desc.pParameters = rootParam;
+    desc.NumParameters = _countof(rootParam);
     ComPtr<ID3DBlob> blob;
     ComPtr<ID3DBlob> errorBlob;
-    HRESULT hr = D3D12SerializeRootSignature(&desc, D3D_ROOT_SIGNATURE_VERSION_1, &blob, &errorBlob);
+    HRESULT hr = D3D12SerializeRootSignature(
+        &desc, D3D_ROOT_SIGNATURE_VERSION_1, &blob, &errorBlob
+    );
     assert(SUCCEEDED(hr));
 
-    hr = m_device->CreateRootSignature(0, blob->GetBufferPointer(), blob->GetBufferSize(), IID_PPV_ARGS(&m_rootSignature));
+    // デバイスからルートシグネチャ作成
+    hr = m_device->CreateRootSignature(
+        0, blob->GetBufferPointer(), blob->GetBufferSize(),
+        IID_PPV_ARGS(&m_rootSignature)
+    );
     assert(SUCCEEDED(hr));
-
     // パイプライン作成
     CreateBasicPipeline();
 }

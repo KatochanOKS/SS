@@ -6,7 +6,7 @@
 
 class Mesh;
 class PipelineManager;
-
+class ConstantBufferManager;
 class GraphicsManager {
 public:
     void SetHWND(HWND hwnd); // 外部からHWNDを渡す
@@ -16,7 +16,7 @@ public:
     void Cleanup();          // 解放
     ID3D12Device* GetDevice() const;
     // 三角形描画用の関数（MeshとPipelineManagerを受け取る）
-    void DrawQuad(std::shared_ptr<Mesh> QuadMesh, PipelineManager* pipelineManager);
+    void DrawQuad(std::shared_ptr<Mesh> QuadMesh, PipelineManager* pipelineManager,ConstantBufferManager* constantBuffer);
     ID3D12GraphicsCommandList* GetCommandList();
 
 private:

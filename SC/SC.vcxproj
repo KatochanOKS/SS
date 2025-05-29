@@ -132,6 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ApplicationManager.cpp" />
+    <ClCompile Include="ConstantBufferManager.cpp" />
     <ClCompile Include="DeviceManager.cpp" />
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="GraphicsManager.cpp" />
@@ -145,6 +146,7 @@
   <ItemGroup>
     <ClInclude Include="ApplicationManager.h" />
     <ClInclude Include="BIN_FILE12.h" />
+    <ClInclude Include="ConstantBufferManager.h" />
     <ClInclude Include="d3dx12.h" />
     <ClInclude Include="DeviceManager.h" />
     <ClInclude Include="EngineManager.h" />
@@ -178,6 +180,9 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">asset/%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">asset/%(Filename).cso</ObjectFileOutput>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Header.hlsli" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
