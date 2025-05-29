@@ -10,14 +10,14 @@ void GameEngine::Initialize() {
     auto* pipelineManager = EngineManager::GetInstance().GetPipelineManager();
     auto* graphicsManager = EngineManager::GetInstance().GetGraphicsManager();
 
-    m_triangleMesh = meshManager->CreateTriangleMesh();
+    m_quadMesh = meshManager->CreateQuadMesh();
     m_pipelineManager = pipelineManager;
     m_graphicsManager = graphicsManager;
 }
 
 void GameEngine::Draw() {
     // OŠpŒ`•`‰æ
-    m_graphicsManager->DrawTriangle(m_triangleMesh, m_pipelineManager);
+    m_graphicsManager->DrawQuad(m_quadMesh, m_pipelineManager);
 }
 
 

@@ -1,13 +1,14 @@
 #pragma once
 #include <d3d12.h>
-#include <wrl.h>
+#include <memory>
 #include "Mesh.h"
-#include <memory>  
+
 class MeshManager {
 public:
-    void Initialize(ID3D12Device* device);
-    std::shared_ptr<Mesh> CreateTriangleMesh();
-    // 今後、CreateCubeMesh()なども追加予定
+    void Initialize(ID3D12Device* device); // デバイス保持
+
+    // 四角形メッシュを生成
+    std::shared_ptr<Mesh> CreateQuadMesh();
 
 private:
     ID3D12Device* m_device = nullptr;

@@ -16,7 +16,7 @@ public:
     void Cleanup();          // 解放
     ID3D12Device* GetDevice() const;
     // 三角形描画用の関数（MeshとPipelineManagerを受け取る）
-    void DrawTriangle(std::shared_ptr<Mesh> triangleMesh, PipelineManager* pipelineManager);
+    void DrawQuad(std::shared_ptr<Mesh> QuadMesh, PipelineManager* pipelineManager);
     ID3D12GraphicsCommandList* GetCommandList();
 
 private:
