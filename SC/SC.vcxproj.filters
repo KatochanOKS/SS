@@ -16,6 +16,9 @@
     <Filter Include="ソース ファイル\GraphicsManager">
       <UniqueIdentifier>{df6c234a-c9bf-48d9-8ed7-21e09025a109}</UniqueIdentifier>
     </Filter>
+    <Filter Include="utility">
+      <UniqueIdentifier>{f0d333df-2f00-4903-8cfb-76ba49702ab9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -68,12 +71,6 @@
     <ClInclude Include="GameEngine.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="BIN_FILE12.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="d3dx12.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="EngineManager.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
@@ -88,6 +85,12 @@
     </ClInclude>
     <ClInclude Include="Mesh.h">
       <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="d3dx12.h">
+      <Filter>utility</Filter>
+    </ClInclude>
+    <ClInclude Include="BIN_FILE12.h">
+      <Filter>utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

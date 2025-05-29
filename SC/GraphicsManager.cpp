@@ -56,25 +56,33 @@ void GraphicsManager::EndFrame() {
     m_deviceManager.ResetCommandList();
 }
 
-void GraphicsManager::DrawTriangle(std::shared_ptr<Mesh> triangleMesh, PipelineManager* pipelineManager) {
+// 四角形（インデックスバッファあり）用の描画関数
+void GraphicsManager::DrawQuad(std::shared_ptr<Mesh> quadMesh, PipelineManager* pipelineManager) {
     auto* cmdList = m_deviceManager.GetCommandList();
 
-    // パイプラインステート・ルートシグネチャ
+    // パイプライン＆ルートシグネチャのセット
     cmdList->SetPipelineState(pipelineManager->GetPipeline("Basic"));
     cmdList->SetGraphicsRootSignature(pipelineManager->GetRootSignature());
 
-    // ビューポート/シザー矩形（ここでは画面全体。メンバや引数で持っても良い）
+    // ビューポート・シザー矩形（ここでは画面全体と仮定）
     D3D12_VIEWPORT viewport = { 0, 0, (float)m_width, (float)m_height, 0, 1 };
     D3D12_RECT scissorRect = { 0, 0, (LONG)m_width, (LONG)m_height };
     cmdList->RSSetViewports(1, &viewport);
     cmdList->RSSetScissorRects(1, &scissorRect);
 
-    // 頂点バッファセット
+    // バッファセット
     cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-    cmdList->IASetVertexBuffers(0, 1, &triangleMesh->VertexBufferView);
+    cmdList->IASetVertexBuffers(0, 1, &quadMesh->VertexBufferView);
 
-    // 描画命令
-    cmdList->DrawInstanced(triangleMesh->VertexCount, 1, 0, 0);
+    // インデックスバッファがある場合は四角形として描画
+    if (quadMesh->IndexBuffer && quadMesh->IndexCount > 0) {
+        cmdList->IASetIndexBuffer(&quadMesh->IndexBufferView);
+        cmdList->DrawIndexedInstanced(quadMesh->IndexCount, 1, 0, 0, 0);
+    }
+    else {
+        // 万が一インデックスがない場合は通常描画
+        cmdList->DrawInstanced(quadMesh->VertexCount, 1, 0, 0);
+    }
 }
 
 
